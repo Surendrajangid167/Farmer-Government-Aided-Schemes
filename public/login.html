@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agro Web App</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #d4edda; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0;
+        }
+        .container { 
+            width: 350px; 
+            padding: 20px; 
+            background: white; 
+            border-radius: 10px; 
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #218838;
+        }
+        input, select, button { 
+            width: calc(100% - 20px); 
+            padding: 12px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+            border: 1px solid #ccc; 
+            font-size: 16px; 
+            display: block; 
+            margin-left: auto; 
+            margin-right: auto; 
+        }
+        button { 
+            background: #218838; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: bold;
+        }
+        button:hover {
+            background: #1e7e34;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <select id="role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+        </select>
+        <button onclick="login()">Login</button>
+        <button onclick="window.location.href='register.html'">Register</button>
+    </div>
+
+    <!-- <script>
+        // Function for Logging
+        function logAction(action, message) {
+            const timestamp = new Date().toISOString();
+            console.log(`[${timestamp}] ${action}: ${message}`);
+        }
+    
+        async function login() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const role = document.getElementById("role").value;
+    
+            logAction("LOGIN ATTEMPT", `Email: ${email}, Role: ${role}`);
+    
+            try {
+                const response = await axios.post("http://localhost:5000/login", { email, password, role });
+    
+                if (response.data.success) {
+                    const token = response.data.token; // ✅ Fetch token from response
+    
+                    if (!token) {
+                        logAction("ERROR", "Token not received from backend!");
+                        alert("Login successful, but no token received!");
+                        return;
+                    }
+    
+                    // ✅ Store role & token in localStorage
+                    localStorage.setItem("role", role);
+                    localStorage.setItem("token", token);
+    
+                    logAction("LOGIN SUCCESS", `Email: ${email}, Role: ${role}`);
+    
+                    // ✅ Redirect based on role
+                    window.location.href = (role === "admin") ? "admin_panel.html" : "user_panel.html";
+                } else {
+                    logAction("LOGIN FAILED", `Invalid Credentials for Email: ${email}`);
+                    alert("Invalid Credentials!");
+                }
+            } catch (error) {
+                logAction("ERROR", "Error connecting to server");
+                console.error(error);
+                alert("Error connecting to server");
+            }
+        }
+    </script>
+     -->
+     
+     <script>
+        async function login() {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+    
+            if (!email || !password) {
+                alert("Please fill in all fields.");
+                return;
+            }
+    
+            try {
+                const response = await axios.post("http://localhost:5000/login", {
+                    email,
+                    password
+                });
+    
+                const { token, userEmail, role } = response.data;
+    
+                // Save to localStorage
+                localStorage.setItem("token", token);
+                localStorage.setItem("userEmail", userEmail);
+                localStorage.setItem("role", role);
+    
+                alert("Login successful!");
+    
+                // Redirect based on role
+                if (role === "admin") {
+                    window.location.href = "admin_panel.html";
+                } else {
+                    window.location.href = "user_panel.html";
+                }
+    
+            } catch (error) {
+                console.error("Login Error:", error);
+                alert(error.response?.data?.message || "Login failed.");
+            }
+        }
+    </script>
+    
+      
+      
+</body>
+</html>

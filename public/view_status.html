@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheme Status</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #ccffcc; 
+            padding: 20px; 
+        }
+        .container { 
+            max-width: 400px;
+            margin: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+        }
+        ul { 
+            list-style: none; 
+            padding: 0; 
+        }
+        li { 
+            background: #f0f0f0; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+            padding: 10px; 
+        }
+        h2 { 
+            color: darkgreen; 
+            margin-bottom: 20px;
+        }
+        .app-box {
+            border: 2px solid #006400; /* Dark Green */
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background-color: #e6ffe6; /* Light Green */
+            text-align: left;
+        }
+        .app-box h3 {
+            margin: 5px 0;
+            color: #004d00; /* Darker Green */
+        }
+        .app-box p {
+            margin: 3px 0;
+            font-size: 16px;
+        }
+        button { 
+            width: 100%; 
+            padding: 10px; 
+            margin-top: 10px; 
+            background-color: #008000; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; }
+        button:hover { 
+            background-color: #006400;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Scheme Status</h2>
+        <ul id="statusList"></ul>
+    
+    <div id="applicationsList"></div>
+
+    <script>
+        async function fetchUserApplications() {
+            const email = localStorage.getItem("userEmail");
+        
+            try {
+                const res = await fetch(`http://localhost:5000/user/applications?email=${email}`);
+                const data = await res.json();
+        
+                const container = document.getElementById("applicationsList");
+        
+                if (!container) {
+                    console.error("applicationsList element not found in HTML");
+                    return;
+                }
+        
+                if (data.success && data.applications.length > 0) {
+                    let output = "";
+                    data.applications.forEach(app => {
+                        const schemeName = app.schemeId?.name || "Unknown Scheme";
+                        const schemeCode = app.schemeId?.code || "N/A";
+                        output += `
+                            <div class="app-box">
+                                <h3>${schemeName}</h3>
+                                <p><strong>Code:</strong> ${schemeCode}</p>
+                                <p><strong>Status:</strong> ${app.status}</p>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = output;
+                } else {
+                    container.innerHTML = "No applications found.";
+                }
+            } catch (err) {
+                console.error("Error fetching applications:", err);
+                const container = document.getElementById("applicationsList");
+                if (container) {
+                    container.innerHTML = "Error fetching data.";
+                }
+            }
+        }
+        
+        fetchUserApplications();
+        </script>
+        
+        <button onclick="window.location.href='user_panel.html'">Go Back</button>
+
+    </div>
+
+</body>
+</html>

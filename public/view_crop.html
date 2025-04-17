@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Crops</title>       
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            background-color: #e6ffe6; /* Light Green */
+        }
+        .container { 
+            max-width: 600px; 
+            margin: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
+        }
+        h2 {
+            color: #006400; /* Dark Green */
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #f0fff0; /* Lighter Green */
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+            border: none; 
+            font-size: 16px;
+            font-weight: bold;
+            background: #006400; /* Dark Green */
+            color: white; 
+            cursor: pointer; 
+        }
+        button:hover { 
+            background: #004d00; /* Darker Green */
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Available Crops</h2>
+        <ul id="cropList">
+            <li>No crops available</li> <!-- Initially Empty -->
+        </ul>
+        <button onclick="goBack()">Go Back</button>
+    </div>
+
+    <script>
+        function logAction(action, message) {
+            const timestamp = new Date().toISOString();
+            console.log(`[${timestamp}] ${action}: ${message}`);
+        }
+
+        function goBack() {
+            logAction("NAVIGATION", "Going back to user panel");
+            window.location.href = 'user_panel.html';
+        }
+
+        function fetchCrops() {
+            logAction("FETCH DATA", "Fetching crops from MongoDB Atlas");
+
+            axios.get("http://localhost:5000/getCrops")
+                .then(response => {
+                    const crops = response.data.crops;
+                    const cropList = document.getElementById("cropList");
+
+                    cropList.innerHTML = ""; // Clear existing crops
+
+                    if (crops.length === 0) {
+                        cropList.innerHTML = "<li>No crops available</li>";
+                    } else {
+                        crops.forEach(crop => {
+                            let li = document.createElement("li");
+                            li.textContent = `${crop.name} - ${crop.season} - ${crop.details}`;
+                            cropList.appendChild(li);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching crops:", error);
+                    logAction("ERROR", "Failed to fetch crops from MongoDB");
+                });
+        }
+
+        // Fetch Crops when Page Loads
+        window.onload = fetchCrops;
+    </script>
+
+</body>
+</html>

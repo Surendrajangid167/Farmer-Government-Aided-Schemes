@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ccffcc;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: darkgreen;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #006400;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 12px;
+            margin: 10px 0;
+            width: 100%;
+            background: #006400;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #004d00;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        <input type="email" id="regEmail" placeholder="Email" required>
+        <input type="password" id="regPassword" placeholder="Password" required>
+        <button onclick="register()">Register</button>
+        <button onclick="window.location.href='login.html'">Go to Login</button>
+    </div>
+    
+    <script>
+        async function register() {
+            const email = document.getElementById("regEmail").value.trim();
+            const password = document.getElementById("regPassword").value.trim();
+
+            if (!email || !password) {
+                alert("Please fill all fields!");
+                return;
+            }
+
+            try {
+                console.log("Sending registration request...");
+                const response = await axios.post("http://localhost:5000/register", { email, password });
+                
+                if (response.data.success) {
+                    alert(response.data.message);
+                    console.log("Registration successful", response.data);
+                    window.location.href = "login.html";
+                } else {
+                    alert(response.data.message);
+                }
+            } catch (error) {
+                if (error.response && error.response.status === 400 && error.response.data.message.includes("User already exists")) {
+                    alert("User already registered, please go to login page.");
+                } else {
+                    console.error("Registration error:", error);
+                    alert("Error registering user. Please try again.");
+                }
+            }
+        }
+    </script>
+</body>
+</html>

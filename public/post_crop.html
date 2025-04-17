@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Crop Details</title>       
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            background-color: #e6ffe6; /* Light Green */
+        }
+        .container { 
+            max-width: 500px; 
+            margin: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
+        }
+        h2 {
+            color: #006400; /* Dark Green */
+        }
+        input, button { 
+            width: calc(100% - 20px); 
+            padding: 12px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+            border: 1px solid #ccc; 
+            font-size: 16px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button { 
+            background: #006400; /* Dark Green */
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: bold;
+        }
+        button:hover { 
+            background: #004d00; /* Darker Green */
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Post Crop Details</h2>
+        <input type="text" id="cropName" placeholder="Crop Name">
+        <input type="text" id="cropSeason" placeholder="Season">
+        <input type="text" id="cropDetails" placeholder="Details">
+        <button onclick="addCrop()">Add Crop</button>
+        <button onclick="goBack()">Go Back</button>
+    </div>
+
+    <script>
+        function logAction(action, message) {
+            const timestamp = new Date().toISOString();
+            console.log(`[${timestamp}] ${action}: ${message}`);
+        }
+
+        function goBack() {
+            logAction("NAVIGATION", "Going back to admin panel");
+            window.location.href = 'admin_panel.html';
+        }
+
+        function addCrop() {
+            const name = document.getElementById("cropName").value.trim();
+            const season = document.getElementById("cropSeason").value.trim();
+            const details = document.getElementById("cropDetails").value.trim();
+
+            if (!name || !season || !details) {
+                alert("Please fill all fields");
+                logAction("ERROR", "User left fields empty");
+                return;
+            }
+
+            logAction("CROP ADD ATTEMPT", `Name: ${name}, Season: ${season}`);
+
+            // MongoDB Atlas API Call
+            axios.post("http://localhost:5000/addCrop", { name, season, details })
+                .then(response => {
+                    if (response.data.success) {
+                        logAction("CROP ADD SUCCESS", `Crop '${name}' added successfully`);
+                        alert("Crop Added Successfully!");
+                        
+                    } else {
+                        logAction("ERROR", "Failed to add crop to MongoDB");
+                        alert("Error: " + response.data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Server Error:", error);
+                    logAction("ERROR", "Server connection failed");
+                    alert("Error connecting to database. Please try again.");
+                });
+        }
+    </script>
+
+</body>
+</html>
