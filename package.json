@@ -1,17 +1,10 @@
 {
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.10.0",
-    "nodemailer": "^6.10.0",
-    "python-shell": "^5.0.0",
-    "react-router-dom": "^7.2.0",
-    "twilio": "^5.5.0",
-    "validator": "^13.12.0",
+    "mongoose": "^8.14.2",
     "winston": "^3.17.0"
   }
 }

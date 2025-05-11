@@ -1,107 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apply for Scheme</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #ccffcc;
-            padding: 20px;
-        }
-        .container {
-            max-width: 400px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .input-box, .button-box {
-            width: 100%;
-            height: 50px;
-            padding: 12px;
-            font-size: 18px;
-            border-radius: 5px;
-            display: block;
-            text-align: center;
-            margin: 10px 0;
-        }
-        .input-box {
-            border: 2px solid #218838;
-            outline: none;
-            width: 93%;
-        }
-        .button-box {
-            border: none;
-            cursor: pointer;
-            color: white;
-            background-color: #218838;
-            font-weight: bold;
-        }
-        .button-box:hover {
-            background-color: #1e7e34;
-        }
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-</head>
-<body>
-
-<div class="container">
-    <h2>Apply for Scheme</h2>
-    <input type="text" id="schemeCode" class="input-box" placeholder="Enter Scheme Code">
-    <button class="button-box" onclick="applyScheme()">Apply</button>
-    <button class="button-box" onclick="goBack()">Go Back</button>
-</div>
-
-<script>
-    function logAction(action, message) {
-        const timestamp = new Date().toISOString();
-        console.log(`[${timestamp}] ${action}: ${message}`);
-    }
-
-    function goBack() {
-        logAction("NAVIGATION", "Returning to user panel");
-        window.location.href = "user_panel.html";
-    }
-
-    async function applyScheme() {
-        const schemeCode = document.getElementById("schemeCode").value.trim();
-        const token = localStorage.getItem("token");
-
-        if (!schemeCode) {
-            alert("Please enter a Scheme Code.");
-            return;
-        }
-
-        if (!token) {
-            alert("You need to log in first.");
-            return;
-        }
-
-        try {
-            logAction("SCHEME APPLY", `Attempting to apply for scheme with code: ${schemeCode}`);
-
-            const response = await axios.post(
-                "http://localhost:5000/applications/apply",
-                { schemeId: schemeCode }, // Your backend is expecting 'schemeId', but treats it as 'code'
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-
-            alert(response.data.message);
-            logAction("SCHEME APPLIED", `Successfully applied for scheme code: ${schemeCode}`);
-        } catch (error) {
-            console.error("Apply Scheme Error:", error);
-            alert(error.response?.data?.message || "An error occurred. Please try again.");
-            logAction("ERROR", "Failed to apply for scheme");
-        }
-    }
-</script>
-
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,7 +11,17 @@
       background-color: #ccffcc;
       padding: 20px;
     }
-
+    body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('img/applyschemes.jpg') no-repeat center center/cover;
+            filter: blur(2px);
+            z-index: -1;
+        }
     .container {
       max-width: 400px;
       margin: auto;

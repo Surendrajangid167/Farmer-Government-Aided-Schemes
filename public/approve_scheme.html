@@ -1,115 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Approve Scheme Applications</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            background-color: #ccffcc;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-        li {
-            background:#218838;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        button {
-            padding: 8px 12px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        .approve-btn {
-            background-color: #218838;
-            color: white;
-        }
-        .approve-btn:hover {
-            background-color: #004d00;
-        }
-        .back-btn {
-            background-color: #218838;
-            color: white;
-            font-size: 18px;
-            padding: 10px 20px;
-            margin-top: 15px;
-            border-radius: 8px;
-        }
-        .back-btn:hover {
-            background-color: #1e7e34;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Approve Scheme Applications</h2>
-        <ul id="appliedSchemesList"></ul>
-        <button class="back-btn" onclick="window.location.href='admin_panel.html'">Go Back</button>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js">
-        async function fetchApplications() {
-            try {
-                const response = await axios.get("http://localhost:5000/applications/pending");
-                const applications = response.data.applications;
-                const list = document.getElementById("application-list");
-                list.innerHTML = "";
-    
-                applications.forEach(app => {
-                    const item = document.createElement("li");
-                    item.innerHTML = `
-                        User: ${app.userId.email} <br>
-                        Scheme Code: ${app.schemeCode} <br>
-                        Status: ${app.status} <br>
-                        <button onclick="approveScheme('${app._id}')">Approve</button>
-                        <hr>
-                    `;
-                    list.appendChild(item);
-                });
-    
-            } catch (error) {
-                console.error("Error fetching applications:", error);
-            }
-        }
-    
-        async function approveScheme(applicationId) {
-            try {
-                const response = await axios.post("http://localhost:5000/applications/approve", { applicationId });
-                alert(response.data.message);
-                fetchApplications(); // refresh list
-            } catch (error) {
-                alert("An error occurred while approving the scheme.");
-                console.error("Approval Error:", error);
-            }
-        }
-    
-        window.onload = fetchApplications;
-    </script>
-    
-    <ul id="application-list"></ul>
-    
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -123,6 +11,17 @@
       padding: 20px;
       background-color: #ccffcc;
     }
+    body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('img/approvescheme.jpg') no-repeat center center/cover;
+            filter: blur(0px);
+            z-index: -1;
+        }
     .container {
       max-width: 600px;
       margin: auto;
@@ -130,6 +29,7 @@
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      margin-left:660px;
     }
     h2 { 
       color: darkgreen; 
@@ -215,7 +115,7 @@
 
                 applications.forEach(app => {
                     const scheme = app.schemeId;
-
+                    const userEmail = app.userEmail || "Not Provided";
                     html += `
                         <div class="application-box">
                             <h3>Scheme: ${scheme.name}</h3>

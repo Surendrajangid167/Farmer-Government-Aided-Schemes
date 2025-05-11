@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schemes</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #ccffcc; padding: 20px; }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('img/availableschemes.jpg') no-repeat center center/cover;
+            filter: blur(2px);
+            z-index: -1;
+        }
+        .container { 
+            max-width: 600px; 
+            margin: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
+        }
+        h2 {
+            color: #006400; /* Dark Green */
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #f0fff0; /* Lighter Green */
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+            border: none; 
+            font-size: 16px;
+            font-weight: bold;
+            background: #006400; /* Dark Green */
+            color: white; 
+            cursor: pointer; 
+        }
+        button:hover { 
+            background: #004d00; /* Darker Green */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Different Schemes With Their Codes</h2>
+        <ul id="schemeList"></ul>
+        <button onclick="goBack()">Go Back</button>
+    </div>
+
+    <script>
+        function displaySchemes() {
+            let schemeList = document.getElementById("schemeList");
+            let schemes = JSON.parse(localStorage.getItem("schemes")) || [
+                { name: "Wheat Support Scheme", code: "1" },
+                { name: "Rice Subsidy Scheme", code: "2" }
+            ];
+
+            schemeList.innerHTML = "";
+            schemes.forEach(scheme => {
+                let listItem = document.createElement("li");
+                listItem.innerHTML = `<strong>${scheme.name}</strong> - Code: ${scheme.code}`;
+                schemeList.appendChild(listItem);
+            });
+        }
+
+        function goBack() {
+            window.location.href = 'user_panel.html';
+        }
+
+        displaySchemes();
+    </script>
+
+</body>
+</html>

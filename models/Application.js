@@ -1,31 +1,3 @@
-// const mongoose = require("mongoose");
-
-// const ApplicationSchema = new mongoose.Schema({
-//     userEmail: { type: String, required: true }, // Add this field
-//     //user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-//     schemeId: { type: mongoose.Schema.Types.ObjectId, ref: "Scheme", required: true },
-//     status: { type: String, enum: ["pending", "approved"], default: "pending" }
-// });
-// module.exports = mongoose.model("Application", ApplicationSchema);
-//
-//
-//const mongoose = require("mongoose");
-// const applicationSchema = new mongoose.Schema({
-//     userEmail: String,
-//     schemeId: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: "Scheme"
-//     },
-//     status: {
-//         type: String,
-//         default: "pending"
-//     }
-// });
-
-// module.exports = mongoose.model("Application", applicationSchema);
-//
-//
-//
 const mongoose = require("mongoose");
 
 const applicationSchema = new mongoose.Schema({
@@ -37,6 +9,7 @@ const applicationSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
+    userEmail: String,
     status: {
         type: String,
         enum: ["pending", "approved", "rejected"],
