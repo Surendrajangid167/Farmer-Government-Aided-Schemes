@@ -38,3 +38,20 @@ A complete web application designed to support Indian farmers by providing easy 
 ```bash
 git clone https://github.com/Surendrajangid167/Farmer.git
 cd Farmer
+
+**Project Structure**
+
+Farmer/
+├── public/
+│   ├── apply_scheme.html
+│   ├── view_crop.html
+│   └── ...
+├── routes/
+│   ├── admin.js
+│   ├── user.js
+├── models/
+│   ├── User.js
+│   ├── Application.js
+│   └── Crop.js
+├── app.js
+└── README.md
